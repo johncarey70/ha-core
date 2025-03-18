@@ -2,7 +2,7 @@
   "name": "Home Assistant Dev",
   "context": "..",
   "dockerFile": "../Dockerfile.dev",
-  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup",
+  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup && pip config set global.index-url http://192.168.15.252:8080/simple/ && pip config set global.trusted-host 192.168.15.252 && pip config set global.extra-index-url https://pypi.org/simple",
   "postStartCommand": "script/bootstrap",
   "containerEnv": {
     "PYTHONASYNCIODEBUG": "1"
@@ -16,7 +16,9 @@
     "-e",
     "GIT_EDITOR=code --wait",
     "--security-opt",
-    "label=disable"
+    "label=disable",
+    "--device=/dev/ttyUSB0:/dev/ttyUSB0:rwm",
+    "--device=/dev/ttyS0:/dev/ttyS0:rwm"
   ],
   "customizations": {
     "vscode": {
@@ -67,5 +69,22 @@
         ]
       }
     }
-  }
+  },
+  "mounts": [
+    {
+      "source": "${localEnv:HOME}/Hassio-dev/custom_components/trinnov",
+      "target": "${containerWorkspaceFolder}/config/custom_components/trinnov",
+      "type": "bind"
+    },
+    {
+      "source": "${localEnv:HOME}/Hassio-dev/custom_components/lumagen",
+      "target": "${containerWorkspaceFolder}/config/custom_components/lumagen",
+      "type": "bind"
+    },
+    {
+      "source": "${localEnv:HOME}/Hassio-dev/custom_components/seymour",
+      "target": "${containerWorkspaceFolder}/config/custom_components/seymour",
+      "type": "bind"
+    }
+  ]
 }
