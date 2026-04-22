@@ -34,6 +34,15 @@ WORKDIR /usr/src
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
+ARG USERNAME=vscode
+ARG USER_UID=1002
+ARG USER_GID=1000
+RUN groupmod -g $USER_GID $USERNAME && \
+    usermod -u $USER_UID -g $USER_GID $USERNAME && \
+    chown -R $USER_UID:$USER_GID /home/$USERNAME
+RUN groupmod -g 18 dialout && usermod -aG dialout vscode
+RUN usermod -aG dialout $USERNAME
+
 USER vscode
 
 ENV VIRTUAL_ENV="/home/vscode/.local/ha-venv"

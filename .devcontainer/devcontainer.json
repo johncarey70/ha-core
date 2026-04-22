@@ -18,6 +18,18 @@
     "--security-opt",
     "label=disable"
   ],
+  "mounts": [
+    {
+      "source": "${localEnv:HOME}/Hassio-dev/custom_components/trinnov",
+      "target":"${containerWorkspaceFolder}/config/custom_components/trinnov",
+      "type":"bind"
+    },
+    {
+      "source": "${localEnv:HOME}/Hassio-dev/custom_components/hdfury-ha/custom_components/hdfury",
+      "target":"${containerWorkspaceFolder}/config/custom_components/hdfury",
+      "type":"bind"
+    }
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
